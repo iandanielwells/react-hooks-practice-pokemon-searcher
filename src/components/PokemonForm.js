@@ -1,14 +1,38 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
 
-function PokemonForm() {
+function PokemonForm({onAddPokemon}) {
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    
+    const newPokemon = {
+      name: event.target.name.value,
+      hp: event.target.hp.value,
+      sprites: {
+        front: event.target.frontUrl.value,
+        back: event.target.backUrl.value
+      }
+    }
+
+    fetch('http://localhost:3001/pokemon', {
+      method: `POST`,
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newPokemon)
+    })
+      .then(res => res.json())
+      // .catch(error = console.log(error))
+      .then(onAddPokemon(newPokemon))
+  }
+
+
   return (
     <div>
       <h3>Add a Pokemon!</h3>
       <Form
-        onSubmit={() => {
-          console.log("submitting form...");
-        }}
+        onSubmit={handleSubmit}
       >
         <Form.Group widths="equal">
           <Form.Input fluid label="Name" placeholder="Name" name="name" />
