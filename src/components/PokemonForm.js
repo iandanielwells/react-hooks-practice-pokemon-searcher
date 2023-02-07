@@ -25,6 +25,8 @@ function PokemonForm({onAddPokemon}) {
       .then(res => res.json())
       // .catch(error = console.log(error))
       .then(onAddPokemon(newPokemon))
+
+      event.target.reset()
   }
 
 
